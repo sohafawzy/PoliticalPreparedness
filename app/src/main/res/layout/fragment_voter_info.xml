@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="voterInfoVM"
+            type="com.soha.politicalpredness.ui.voterInfo.VoterInfoViewModel" />
+
+        <variable
+            name="election"
+            type="com.soha.politicalpredness.models.Election" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/pbVoterInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/btnFollow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvElectionName" />
+
+        <TextView
+            android:id="@+id/tvElectionName"
+            style="@style/TextAppearance.AppCompat.AppTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:padding="@dimen/small_padding"
+            android:text="@{election.name}"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvElectionDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_padding"
+            android:text="@{election.electionDay}"
+            app:layout_constraintTop_toBottomOf="@id/tvElectionName" />
+
+        <TextView
+            android:id="@+id/tvElectionInformation"
+            style="@style/TextAppearance.AppCompat.AppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:onClick="@{voterInfoVM::onElectionsInfoClick}"
+            android:text="@string/title_elections_information"
+            android:visibility="@{voterInfoVM.hasElectionInfo ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="@id/tvElectionDay"
+            app:layout_constraintTop_toBottomOf="@id/tvElectionDay" />
+
+        <TextView
+            android:id="@+id/tvVotingLocations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:onClick="@{voterInfoVM::onVotingLocationsClick}"
+            android:text="@string/title_voting_locations"
+            android:visibility="@{voterInfoVM.hasVotingLocations ? View.VISIBLE : View.GONE }"
+            app:layout_constraintStart_toStartOf="@id/tvElectionDay"
+            app:layout_constraintTop_toBottomOf="@id/tvElectionInformation" />
+
+        <TextView
+            android:id="@+id/tvBallotLocations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:onClick="@{voterInfoVM::onBallotLocationsClick}"
+            android:text="@string/title_ballot_locations"
+            android:visibility="@{voterInfoVM.hasBallotLocations ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="@id/tvElectionDay"
+            app:layout_constraintTop_toBottomOf="@id/tvVotingLocations" />
+
+
+        <Button
+            android:id="@+id/btnFollow"
+            style="@style/Base.Widget.AppCompat.Button.AppButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{(view)-> voterInfoVM.onFollowClick(view,election)}"
+            android:text="@{voterInfoVM.isFollowed ? @string/btn_unfollow_text : @string/btn_follow_text}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="@string/btn_follow_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="representativesVM"
+            type="com.soha.politicalpredness.ui.representatives.RepresentativesViewModel" />
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mlRepresentatives"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        app:layoutDescription="@xml/rep_scene">
+
+        <TextView
+            android:id="@+id/tvRepresentativesSearch"
+            style="@style/TextAppearance.AppCompat.AppTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_padding"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:layout_marginEnd="@dimen/medium_padding"
+            android:text="@string/title_representatives_search"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/tvAddressLine1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:autofillHints="hint_tvAddressLine1"
+            android:hint="@string/hint_address_line_1"
+            android:inputType="text"
+            android:text="@{representativesVM.address.line1}"
+            app:layout_constraintEnd_toEndOf="@id/tvRepresentativesSearch"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@id/tvRepresentativesSearch" />
+
+        <EditText
+            android:id="@+id/tvAddressLine2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:autofillHints="@string/hint_address_line_2"
+            android:hint="@string/hint_address_line_2"
+            android:inputType="text"
+            android:text="@{representativesVM.address.line2}"
+            app:layout_constraintEnd_toEndOf="@id/tvRepresentativesSearch"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@id/tvAddressLine1" />
+
+        <EditText
+            android:id="@+id/tvCity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:autofillHints="@string/hint_city"
+            android:hint="@string/hint_city"
+            android:inputType="text"
+            android:text="@{representativesVM.address.city}"
+            app:layout_constraintEnd_toStartOf="@+id/tvState"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddressLine2" />
+
+        <Spinner
+            android:id="@+id/tvState"
+            state="@{representativesVM.address.state}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/small_padding"
+            android:autofillHints="@string/hint_state"
+            android:entries="@array/states"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCity"
+            app:layout_constraintEnd_toEndOf="@id/tvRepresentativesSearch"
+            app:layout_constraintStart_toEndOf="@+id/tvCity"
+            app:layout_constraintTop_toTopOf="@+id/tvCity" />
+
+        <EditText
+            android:id="@+id/tvZipCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:autofillHints="@string/hint_zip"
+            android:hint="@string/hint_zip"
+            android:inputType="number"
+            android:text="@{representativesVM.address.zip}"
+            app:layout_constraintEnd_toEndOf="@+id/tvCity"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@+id/tvCity" />
+
+        <Button
+            android:id="@+id/btnFindMyRepresentatives"
+            style="@style/Base.Widget.AppCompat.Button.AppButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:text="@string/btn_find_my_representatives_text"
+            app:layout_constraintEnd_toEndOf="@id/tvRepresentativesSearch"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@+id/tvZipCode" />
+
+        <Button
+            android:id="@+id/btnUseCurrentLocation"
+            style="@style/Base.Widget.AppCompat.Button.AppButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:text="@string/btn_use_my_location_text"
+            app:layout_constraintEnd_toEndOf="@id/tvRepresentativesSearch"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@id/btnFindMyRepresentatives" />
+
+        <TextView
+            android:id="@+id/tvMyRepresentatives"
+            style="@style/TextAppearance.AppCompat.AppTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:text="@string/title_my_representatives"
+            app:layout_constraintEnd_toEndOf="@id/tvRepresentativesSearch"
+            app:layout_constraintStart_toStartOf="@id/tvRepresentativesSearch"
+            app:layout_constraintTop_toBottomOf="@id/btnUseCurrentLocation" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRepresentatives"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMyRepresentatives"
+            tools:listitem="@layout/item_representative" />
+
+        <ProgressBar
+            android:id="@+id/pbRepresentatives"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMyRepresentatives" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

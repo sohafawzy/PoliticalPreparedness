@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    android:label="@string/app_name"
+    app:startDestination="@id/launchFragment">
+
+    <fragment
+        android:id="@+id/launchFragment"
+        android:name="com.soha.politicalpredness.ui.launch.LaunchFragment"
+        android:label="fragment_launch"
+        tools:layout="@layout/fragment_launch">
+        <action
+            android:id="@+id/action_goToUpcomingElections"
+            app:destination="@id/upcomingElectionsFragment" />
+        <action
+            android:id="@+id/action_goToFindMyRepresentatives"
+            app:destination="@id/myRepresentativesFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/upcomingElectionsFragment"
+        android:name="com.soha.politicalpredness.ui.elections.UpcomingElectionsFragment"
+        android:label="fragment_elections"
+        tools:layout="@layout/fragment_elections">
+        <action
+            android:id="@+id/action_goToVoterInfoFragment"
+            app:destination="@+id/voterInfoFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/myRepresentativesFragment"
+        android:name="com.soha.politicalpredness.ui.representatives.RepresentativesFragment"
+        android:label="fragment_representatives"
+        tools:layout="@layout/fragment_representatives">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/voterInfoFragment"
+        android:name="com.soha.politicalpredness.ui.voterInfo.VoterInfoFragment"
+        android:label="fragment_voter_info"
+        tools:layout="@layout/fragment_voter_info">
+        <argument
+            android:name="election"
+            app:argType="com.soha.politicalpredness.models.Election" />
+
+    </fragment>
+
+</navigation>
