@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.soha.politicalpredness.R
 import com.soha.politicalpredness.databinding.FragmentRepresentativesBinding
+import com.soha.politicalpredness.models.Address
 import com.soha.politicalpredness.ui.ViewModelFactory
 import com.soha.politicalpredness.utils.Constants.PERMISSIONS_LOCATION
 import com.soha.politicalpredness.utils.Constants.REQUEST_LOCATION_PERMISSIONS
@@ -19,6 +20,7 @@ class RepresentativesFragment : Fragment() {
     private val representativesViewModel: RepresentativesViewModel by viewModels {
         ViewModelFactory(requireContext())
     }
+    lateinit var binding: FragmentRepresentativesBinding
 
     lateinit var adapter: RepresentativesAdapter
     override fun onCreateView(
@@ -26,13 +28,14 @@ class RepresentativesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentRepresentativesBinding.inflate(inflater, container, false)
+        binding = FragmentRepresentativesBinding.inflate(inflater, container, false)
         adapter = RepresentativesAdapter(requireContext())
 
         binding.lifecycleOwner = this@RepresentativesFragment
         binding.representativesVM = representativesViewModel
         binding.rvRepresentatives.adapter = adapter
         binding.btnUseCurrentLocation.setOnClickListener {
+            binding.pbRepresentatives.visibility = View.VISIBLE
             if (representativesViewModel.locationUtils.areLocationPermissionsGranted(requireContext()))
                 representativesViewModel.locationUtils.getLastLocation(requireContext())
             else
@@ -42,7 +45,13 @@ class RepresentativesFragment : Fragment() {
 
         binding.btnFindMyRepresentatives.setOnClickListener {
             binding.pbRepresentatives.visibility = View.VISIBLE
-            representativesViewModel.onSearchClick(representativesViewModel.address.value!!)
+            val address = Address(
+                binding.tvAddressLine1.text.toString(),
+                binding.tvAddressLine2.text.toString(), binding.tvCity.text.toString(),
+                binding.tvState.selectedItem.toString(), binding.tvZipCode.text.toString()
+            )
+            representativesViewModel.address.value = address
+            representativesViewModel.findRepresentatives(address)
         }
         representativesViewModel.representatives.observe(viewLifecycleOwner, Observer {
             binding.pbRepresentatives.visibility = View.GONE
@@ -66,13 +75,14 @@ class RepresentativesFragment : Fragment() {
         if (requestCode == REQUEST_LOCATION_PERMISSIONS) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 representativesViewModel.locationUtils.getLastLocation(requireContext())
-            else
+            else {
+                binding.pbRepresentatives.visibility = View.GONE
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.error_location_permission_denied),
                     Toast.LENGTH_SHORT
                 ).show()
-
+            }
         }
     }
 }

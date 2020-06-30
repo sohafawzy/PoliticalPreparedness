@@ -13,8 +13,8 @@ class Division(
     fun getAddress(): String {
         var address = ""
         if (state.isNotEmpty()) address = address.plus(state)
-        if (address.isNotEmpty() && country.isNotEmpty()) address = address.plus(", $country")
-        else if (country.isNotEmpty()) address = address.plus(country)
+        else address = address.plus("state")
+        if (country.isNotEmpty()) address = address.plus(", $country")
         return address
     }
 

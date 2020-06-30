@@ -28,13 +28,14 @@ class RepresentativesViewModel(val context: Context, val repository: Repository)
         kotlin.runCatching {
             locationUtils.getAddressByLocation(context, location)?.let {
                 address.postValue(it)
+                findRepresentatives(it)
             }
         }.onFailure {
             error.postValue("Couldn't get location")
         }
     }
 
-    fun onSearchClick(address: Address) {
+    fun findRepresentatives(address: Address) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getRepresentatives(address.getAddress())?.let {
                 if (it.officials == null && it.offices == null && !it.error.isNullOrEmpty()) {
